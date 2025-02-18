@@ -1,0 +1,44 @@
+{
+  "translation": {
+    "languages": {
+      "en": {
+        "code": "en",
+        "name": "English"
+      },
+      "fr": {
+        "code": "fr",
+        "name": "French"
+      },
+      "es": {
+        "code": "es",
+        "name": "Spanish"
+      }
+    },
+    "headers": {
+      "home": "Home",
+      "events": "Events",
+      "myProfile": "My Profile"
+    },
+    "sentences": {
+      "noEventsFound": "No events found",
+      "deleteEventMessage": "Are you sure you want to delete this event!"
+    },
+    "words": {
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "update": "Update",
+      "like": "Like",
+      "likes": "Likes",
+      "comment": "Comment",
+      "comments": "Comments",
+      "doComment": "Comment",
+      "send": "Send",
+      "close": "Close",
+      "host": "Host"
+
+    },
+    "placeholders":{
+      "writeComment": "Write Comment"
+    }
+  }
+}

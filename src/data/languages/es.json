@@ -1,0 +1,23 @@
+{
+  "translation": {
+    "languages": {
+      "en": {
+        "code": "en",
+        "name": "Inglés"
+      },
+      "fr": {
+        "code": "fr",
+        "name": "Francés"
+      },
+      "es": {
+        "code": "es",
+        "name": "Español"
+      }
+    },
+    "headers": {
+      "home": "Inicio",
+      "events": "Eventos",
+      "myProfile": "Mi Perfil"
+    }
+  }
+}
