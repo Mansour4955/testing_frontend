@@ -5,11 +5,13 @@ import axios from "axios";
 import { AiOutlineClose } from "react-icons/ai";
 import luxonEvent from "@/helpers/luxonEvent";
 import { useTranslation } from "next-i18next";
-
+import { IoPersonSharp } from "react-icons/io5";
 import dynamic from "next/dynamic";
 import ShowCommentsSkeleton from "@/skeleton/ShowCommentsSkeleton";
 import getProfileImage from "@/helpers/getProfileImage";
 import Reaction from "./Reaction";
+import { useMediaQuery } from "react-responsive";
+import JoinLeaveEvent from "./JoinLeaveEvent";
 
 // Lazy load the component
 
@@ -20,7 +22,7 @@ const ShowComments = dynamic(() => import("./ShowComments"), {
   ssr: false, // Optional: Disable SSR if needed
   loading: () => <ShowCommentsSkeleton />, // Fallback UI
 });
-const myId = "6771caff3ff48cf747a16823";
+const myId = "67b39b8e3fedff75e372e608";
 // const token =
 //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzFjZDlmYTRjMTQ5OTMyN2RiNzg2MiIsInJvbGUiOiJub3JtYWwiLCJpYXQiOjE3Mzc0NzcxNTQsImV4cCI6MTczODA4MTk1NH0.7RP8kYTN1geExmapihEzN3GoBwqsdPTSex31Vb_10m8";
 const token =
@@ -46,7 +48,9 @@ export default function Event({
     event.description
   );
   const [hostProfile, setHostProfile] = useState(null);
-
+  const isSmallerThan360 = useMediaQuery({ query: "(max-width: 360px)" });
+  const isSmallerThan480 = useMediaQuery({ query: "(max-width: 480px)" });
+  const isSmallerThan640 = useMediaQuery({ query: "(max-width: 640px)" });
   // get host profile
   useEffect(() => {
     const image = getProfileImage(event.host);
@@ -131,9 +135,9 @@ export default function Event({
         {(showDeleteEvent || showUpdateEvent) && (
           <div
             className={`absolute left-1/2 top-[10px] -translate-x-1/2 max-xs:text-xs xs:text-xs sm:text-sm lg:text-base z-30 ${
-              showUpdatePost
+              showUpdateEvent
                 ? "max-xs:w-[250px] xs:w-[250px] sm:w-[350px]"
-                : showDeletePost
+                : showDeleteEvent
                 ? "max-xs:w-[250px] xs:w-[250px] sm:w-[350px]"
                 : ""
             } shadow-xl rounded-md font-medium ${
@@ -221,7 +225,7 @@ export default function Event({
         }`}
       >
         <div className="flex justify-between">
-          <div className="flex max-xs:gap-x-1 xs:gap-x-1 sm:gap-x-2 lg:gap-x-3 items-center">
+          <div className="flex max-xs:gap-x-1 xs:gap-x-1 sm:gap-x-2 lg:gap-x-3">
             {hostProfile && (
               <Image
                 src={hostProfile}
@@ -249,64 +253,103 @@ export default function Event({
               >
                 {formattedDate}
               </p>
+              <span
+                className={`max-xs:text-[10px] xs:text-[10px] sm:text-xs lg:text-sm font-normal ${
+                  event.status === ("cancelled" || "completed")
+                    ? mode === "light"
+                      ? "text-light-red"
+                      : "text-dark-red"
+                    : event.status === "ongoing"
+                    ? mode === "light"
+                      ? "text-light-secondary"
+                      : "text-dark-secondary"
+                    : mode === "light"
+                    ? "text-light-secondaryText"
+                    : "text-dark-secondaryText"
+                }`}
+              >
+                {event.status}
+              </span>
             </div>
           </div>
-          {event.host._id === myId && (
-            <div className={`${showOptionsPopup && "relative z-30"}`}>
-              {showOptionsPopup ? (
-                <span onClick={() => setShowOptionsPopup(false)}>
-                  <AiOutlineClose className={`cursor-pointer `} size={16} />
-                </span>
-              ) : (
-                <span
-                  onClick={() => {
-                    setShowOptionsPopup(true);
-                    setShowUpdateEvent(false);
-                    setShowDeleteEvent(false);
-                  }}
-                >
-                  <FaEllipsisH className={`cursor-pointer `} size={18} />
-                </span>
-              )}
-              {showOptionsPopup && (
-                <div
-                  className={`absolute p-2 flex flex-col shadow-xl gap-y-2 rounded-md max-xs:text-xs xs:text-xs sm:text-sm lg:text-base ${
-                    t("dir") === "ltr" ? "right-0" : "left-0"
-                  } min-w-[150px] max-w-[200px] top-[20px] ${
-                    mode === "light"
-                      ? "bg-light-cardsBackground text-dark-text"
-                      : "bg-dark-cardsBackground text-light-text"
-                  }`}
-                >
-                  <span
-                    onClick={handleUpdateEvent}
-                    className={`flex-1 py-1 flex items-center font-semibold rounded-md justify-center duration-150 cursor-pointer ${
-                      mode === "light"
-                        ? "bg-light-primary hover:text-light-text"
-                        : "bg-dark-primary hover:text-dark-text"
-                    }`}
-                  >
-                    {t("words.update")}
-                  </span>
-                  <span
-                    onClick={handleDeleteEvent}
-                    className={`flex-1 py-1 flex items-center font-semibold rounded-md justify-center duration-150 cursor-pointer  ${
-                      mode === "light"
-                        ? "bg-light-red hover:text-light-text"
-                        : "bg-dark-red hover:text-dark-text"
-                    }`}
-                  >
-                    {t("words.delete")}
-                  </span>
-                </div>
-              )}
+          <div className="flex gap-x-3">
+            <JoinLeaveEvent mode={mode} setEvent={setEvent} event={event} />
+            <div className="flex gap-x-0.5">
+              <span className="max-xs:text-xs xs:text-xs sm:text-sm">
+                {event.participants.length}
+              </span>
+              <IoPersonSharp
+                size={
+                  isSmallerThan360
+                    ? 12
+                    : isSmallerThan480
+                    ? 14
+                    : isSmallerThan640
+                    ? 16
+                    : 16
+                }
+              />
             </div>
-          )}
+            {event.host._id === myId && (
+              <div className={`${showOptionsPopup && "relative z-30"}`}>
+                {showOptionsPopup ? (
+                  <span onClick={() => setShowOptionsPopup(false)}>
+                    <AiOutlineClose className={`cursor-pointer `} size={16} />
+                  </span>
+                ) : (
+                  <span
+                    onClick={() => {
+                      setShowOptionsPopup(true);
+                      setShowUpdateEvent(false);
+                      setShowDeleteEvent(false);
+                    }}
+                  >
+                    <FaEllipsisH className={`cursor-pointer `} size={18} />
+                  </span>
+                )}
+                {showOptionsPopup && (
+                  <div
+                    className={`absolute p-2 flex flex-col shadow-xl gap-y-2 rounded-md max-xs:text-xs xs:text-xs sm:text-sm lg:text-base right-0
+                     min-w-[150px] max-w-[200px] top-[20px] ${
+                       mode === "light"
+                         ? "bg-light-cardsBackground text-dark-text"
+                         : "bg-dark-cardsBackground text-light-text"
+                     }`}
+                  >
+                    <span
+                      onClick={handleUpdateEvent}
+                      className={`flex-1 py-1 flex items-center font-semibold rounded-md justify-center duration-150 cursor-pointer ${
+                        mode === "light"
+                          ? "bg-light-primary hover:text-light-text"
+                          : "bg-dark-primary hover:text-dark-text"
+                      }`}
+                    >
+                      {t("words.update")}
+                    </span>
+                    <span
+                      onClick={handleDeleteEvent}
+                      className={`flex-1 py-1 flex items-center font-semibold rounded-md justify-center duration-150 cursor-pointer  ${
+                        mode === "light"
+                          ? "bg-light-red hover:text-light-text"
+                          : "bg-dark-red hover:text-dark-text"
+                      }`}
+                    >
+                      {t("words.delete")}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
         <div className="flex flex-col gap-y-2">
-          <p className="max-xs:text-xs xs:text-xs sm:text-sm lg:text-base">
-            {event.description}
-          </p>
+          <div className="max-xs:text-xs xs:text-xs sm:text-sm lg:text-base flex flex-col gap-y-1">
+            <p className="max-xs:text-sm xs:text-sm sm:text-base lg:text-lg flex items-center gap-x-1">
+              (<span className="capitalize">{event.access}</span>
+              <span>{event.category}</span>)
+            </p>
+            <p>{event.description}</p>
+          </div>
           {event.content.publicId && (
             <div className="w-full h-[350px] sm:h-[400px] lg:h-[450px]">
               {event.content.type === "image" ? (
@@ -329,9 +372,7 @@ export default function Event({
           )}
         </div>
         <div className="flex">
-          <p
-            className="flex-1 flex gap-x-1 justify-center items-center"
-          >
+          <p className="flex-1 flex gap-x-1 justify-center items-center max-xs:text-xs xs:text-xs sm:text-sm lg:text-base">
             {event.likes.length === 0 || event.likes.length === 1
               ? `${event.likes.length} ${t("words.like")}`
               : `${event.likes.length} ${t("words.likes")}`}

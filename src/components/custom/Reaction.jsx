@@ -27,12 +27,6 @@ export default function Reaction({
 
   const myId = "6771caff3ff48cf747a16823";
   const isUserReacted = likes.find((like) => like._id === myId);
-  ////////////
-  const [isHovered, setIsHovered] = useState(false);
-  const [isTooltipVisible, setIsTooltipVisible] = useState(false);
-  const [selectedReaction, setSelectedReaction] = useState(null);
-  const [isClicked, setIsClicked] = useState(false);
-  const hoverTimeout = useRef(null); // Using ref for hoverTimeout
 
   const token =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzFjYWZmM2ZmNDhjZjc0N2ExNjgyMyIsInJvbGUiOiJub3JtYWxfcHJvZmVzc2lvbmFsIiwiaWF0IjoxNzM3NjEwMjAzfQ.11m55Oxnuq8ahbKgJAh801AGUEskxn5cv4RzOY2WrVU";
@@ -102,7 +96,7 @@ export default function Reaction({
                   : isSmallerThan480
                   ? 14
                   : isSmallerThan640
-                  ? 16
+                  ? 14
                   : 16
               }
             />
@@ -114,7 +108,7 @@ export default function Reaction({
                   : isSmallerThan480
                   ? 14
                   : isSmallerThan640
-                  ? 16
+                  ? 14
                   : 16
               }
             />

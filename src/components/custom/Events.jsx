@@ -5,10 +5,11 @@ import axios from "axios";
 import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import EventSkeleton from "@/skeleton/EventSkeleton";
 // Lazy load the component
 const Event = dynamic(() => import("./Event"), {
   ssr: false, // Optional: Disable SSR if needed
-  //   loading: () => <PostSkeleton />, // Fallback UI
+  loading: () => <EventSkeleton />, // Fallback UI
 });
 
 // const token =
