@@ -21,7 +21,8 @@
     },
     "sentences": {
       "noEventsFound": "No events found",
-      "deleteEventMessage": "Are you sure you want to delete this event!"
+      "deleteEventMessage": "Are you sure you want to delete this event!",
+      "uploadProfileImage": "Upload profile image (optional)"
     },
     "words": {
       "cancel": "Cancel",
@@ -36,7 +37,13 @@
       "close": "Close",
       "host": "Host",
       "leave": "Leave",
-      "join": "Join"
+      "join": "Join",
+      "register": "Register",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "password": "Password",
+      "cPassword": "Confirm Password"
     },
     "placeholders": {
       "writeComment": "Write Comment"
