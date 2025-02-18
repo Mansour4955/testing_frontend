@@ -34,10 +34,11 @@
       "doComment": "Comment",
       "send": "Send",
       "close": "Close",
-      "host": "Host"
-
+      "host": "Host",
+      "leave": "Leave",
+      "join": "Join"
     },
-    "placeholders":{
+    "placeholders": {
       "writeComment": "Write Comment"
     }
   }
