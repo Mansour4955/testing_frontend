@@ -1,8 +1,8 @@
-import Image from "next/image";
 import React, { useState } from "react";
 import profileImage from "../../../public/default_profile_image.webp";
 import axios from "axios";
 import { useTranslation } from "next-i18next";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 export default function CreateComment({
   mode,
   eventId,
@@ -13,8 +13,10 @@ export default function CreateComment({
   showComments,
 }) {
   const { t } = useTranslation();
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzFjYWZmM2ZmNDhjZjc0N2ExNjgyMyIsInJvbGUiOiJub3JtYWxfcHJvZmVzc2lvbmFsIiwiaWF0IjoxNzM3NjEwMjAzfQ.11m55Oxnuq8ahbKgJAh801AGUEskxn5cv4RzOY2WrVU";
+  const { getItem } = useLocalStorage("userData");
+  const userData = getItem();
+  const { token } = userData;
+
   const [isFocused, setIsFocused] = useState(false);
   const [comment, setComment] = useState("");
   const [errorComment, setErrorComment] = useState("");
@@ -53,13 +55,6 @@ export default function CreateComment({
       }`}
     >
       <div className="flex max-xs:gap-x-1 xs:gap-x-1 sm:gap-x-2">
-        <Image
-          src={profileImage}
-          alt="Commenter Image"
-          className="max-xs:w-7 max-xs:h-7 xs:w-7 xs:h-7 sm480:w-8 sm480:h-8 md:w-9 md:h-9 lg:w-10 lg:h-10 rounded-full"
-          width={100}
-          height={100}
-        />
         <textarea
           value={comment}
           onChange={(e) => {

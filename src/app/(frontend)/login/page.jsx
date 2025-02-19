@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Link from "next/link";
 
@@ -11,7 +10,6 @@ export default function Login() {
   const { t } = useTranslation();
   const { mode } = useSelector((state) => state.settings);
   const { setItem } = useLocalStorage("userData");
-  const router = useRouter();
 
   // React Hook Form initialization
   const {
@@ -41,7 +39,7 @@ export default function Login() {
 
       const { message, ...userDataToBeStored } = res.data;
       setItem(userDataToBeStored);
-      router.push("/");
+      window.location.href = "/";
     } catch (error) {
       console.error("Error submitting form:", error.message);
     }

@@ -6,15 +6,16 @@ import dynamic from "next/dynamic";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import EventSkeleton from "@/skeleton/EventSkeleton";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 // Lazy load the component
 const Event = dynamic(() => import("./Event"), {
   ssr: false, // Optional: Disable SSR if needed
   loading: () => <EventSkeleton />, // Fallback UI
 });
 
-// const token =
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzFjYWZmM2ZmNDhjZjc0N2ExNjgyMyIsInJvbGUiOiJub3JtYWxfcHJvZmVzc2lvbmFsIiwiaWF0IjoxNzM3NjEwMjAzfQ.11m55Oxnuq8ahbKgJAh801AGUEskxn5cv4RzOY2WrVU";
 export default function Events({ parent, filter }) {
+  const { getItem } = useLocalStorage("userData");
+  const userData = getItem();
   const { t } = useTranslation();
   const { mode } = useSelector((state) => state.settings);
   const [events, setEvents] = useState([]);
@@ -38,7 +39,7 @@ export default function Events({ parent, filter }) {
                 `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events?page=${page}`,
                 {
                   headers: {
-                    Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+                    Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
                   },
                 }
               )
@@ -67,7 +68,7 @@ export default function Events({ parent, filter }) {
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events?page=${page}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+            Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
           },
         }
       );
@@ -112,7 +113,7 @@ export default function Events({ parent, filter }) {
   return (
     <div className="w-full">
       {events?.length > 0 ? (
-        <div className="flex flex-col items-center max-xs:gap-y-3 xs:gap-y-3 sm480:gap-y-4 sm:gap-y-5 md:gap-y-6 lg:gap-y-7">
+        <div className="flex flex-col items-center max-xs:gap-y-3 xs:gap-y-3 sm480:gap-y-4 sm:gap-y-5 md:gap-y-6 lg:gap-y-7 mt-10 max-md:mt-8 max-sm:mt-6">
           {events.map((event, index) =>
             // Attach the ref to the wrapper of the last event
             index === events.length - 1 ? (

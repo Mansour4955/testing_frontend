@@ -7,14 +7,12 @@ import luxonEvent from "@/helpers/luxonEvent";
 import { useTranslation } from "next-i18next";
 import dynamic from "next/dynamic";
 import getProfileImage from "@/helpers/getProfileImage";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 // Lazy load the component
 const Reaction = dynamic(() => import("./Reaction"), {
   ssr: false, // Optional: Disable SSR if needed
 });
 
-const myId = "67b39b8e3fedff75e372e608";
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzFjYWZmM2ZmNDhjZjc0N2ExNjgyMyIsInJvbGUiOiJub3JtYWxfcHJvZmVzc2lvbmFsIiwiaWF0IjoxNzM3NjEwMjAzfQ.11m55Oxnuq8ahbKgJAh801AGUEskxn5cv4RzOY2WrVU";
 export default function Comment({
   commentData,
   mode,
@@ -23,20 +21,16 @@ export default function Comment({
   deleteCommentCount,
 }) {
   const { t } = useTranslation();
-  // const [refreshReplies, setRefreshReplies]= useState(0)
   const [comment, setComment] = useState(commentData);
   const [updatedComment, setUpdatedComment] = useState(comment.comment);
   const [showUpdateComment, setShowUpdateComment] = useState(false);
   const [showDeleteComment, setShowDeleteComment] = useState(false);
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
   const [isTextareaFocused, setIsTextareaFocused] = useState(false);
-  const [showCreateReply, setShowCreateReply] = useState(false);
-  const [showLikes, setShowLikes] = useState(false);
-  const [createReplyCount, setCreateReplyCount] = useState(0);
-  const [deleteReplyCount, setDeleteReplyCount] = useState(0);
-  const [replies, setReplies] = useState(null);
-  const [showReplies, setShowReplies] = useState(false);
 
+  const { getItem } = useLocalStorage("userData");
+  const userData = getItem();
+  const { token, id: myId } = userData;
   const profileImageOfCommentOwner = getProfileImage(comment.user);
   const formattedDate = luxonEvent(comment.createdAt);
 
@@ -213,6 +207,17 @@ export default function Comment({
                   )}
                 </div>
                 <div className="flex items-center gap-x-2">
+                  {comment.edited && (
+                    <p
+                      className={`px-1 max-xs:text-[10px] xs:text-[10px] sm:text-xs lg:text-sm rounded-md ${
+                        mode === "light"
+                          ? "text-light-secondary bg-light-cardsBackground"
+                          : "text-dark-secondary bg-dark-cardsBackground"
+                      }`}
+                    >
+                      {t("words.edited")}
+                    </p>
+                  )}
                   <p className="max-xs:text-[10px] xs:text-[10px] sm:text-xs lg:text-sm">
                     {formattedDate}
                   </p>

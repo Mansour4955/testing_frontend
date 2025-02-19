@@ -12,6 +12,7 @@ import getProfileImage from "@/helpers/getProfileImage";
 import Reaction from "./Reaction";
 import { useMediaQuery } from "react-responsive";
 import JoinLeaveEvent from "./JoinLeaveEvent";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 // Lazy load the component
 
@@ -22,17 +23,15 @@ const ShowComments = dynamic(() => import("./ShowComments"), {
   ssr: false, // Optional: Disable SSR if needed
   loading: () => <ShowCommentsSkeleton />, // Fallback UI
 });
-const myId = "67b39b8e3fedff75e372e608";
-// const token =
-//   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzFjZDlmYTRjMTQ5OTMyN2RiNzg2MiIsInJvbGUiOiJub3JtYWwiLCJpYXQiOjE3Mzc0NzcxNTQsImV4cCI6MTczODA4MTk1NH0.7RP8kYTN1geExmapihEzN3GoBwqsdPTSex31Vb_10m8";
-const token =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzFjYWZmM2ZmNDhjZjc0N2ExNjgyMyIsInJvbGUiOiJub3JtYWxfcHJvZmVzc2lvbmFsIiwiaWF0IjoxNzM3NjEwMjAzfQ.11m55Oxnuq8ahbKgJAh801AGUEskxn5cv4RzOY2WrVU";
+
 export default function Event({
   setDeleteEventCount,
   deleteEventCount,
   eventData,
   mode,
 }) {
+  const { getItem } = useLocalStorage("userData");
+  const userData = getItem();
   const { t } = useTranslation();
   const [commentsNumber, setCommentsNumber] = useState(0);
   const [deleteCommentCount, setDeleteCommentCount] = useState(0);
@@ -93,7 +92,7 @@ export default function Event({
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${event._id}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+            Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
           },
         }
       );
@@ -116,7 +115,7 @@ export default function Event({
           { description: updatedDescription },
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+              Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
             },
           }
         );
@@ -130,7 +129,7 @@ export default function Event({
   };
 
   return (
-    <div className="max-xs:w-[95%] xs:w-[95%] sm360:w-[95%] sm480:w-[95%] sm:w-[95%] md:w-[90%] lg:w-[85%]">
+    <div className="max-xs:w-[95%] xs:w-[95%] sm360:w-[95%] sm480:w-[95%] sm:w-[95%] md:w-[90%] lg:w-[85%] ">
       <div className="relative w-full">
         {(showDeleteEvent || showUpdateEvent) && (
           <div
@@ -273,7 +272,9 @@ export default function Event({
             </div>
           </div>
           <div className="flex gap-x-3">
-            <JoinLeaveEvent mode={mode} setEvent={setEvent} event={event} />
+            {event.host._id !== userData?.myId && (
+              <JoinLeaveEvent mode={mode} setEvent={setEvent} event={event} />
+            )}
             <div className="flex gap-x-0.5">
               <span className="max-xs:text-xs xs:text-xs sm:text-sm">
                 {event.participants.length}
@@ -290,7 +291,7 @@ export default function Event({
                 }
               />
             </div>
-            {event.host._id === myId && (
+            {event.host._id === userData?.myId && (
               <div className={`${showOptionsPopup && "relative z-30"}`}>
                 {showOptionsPopup ? (
                   <span onClick={() => setShowOptionsPopup(false)}>
@@ -407,7 +408,6 @@ export default function Event({
           <p
             onClick={() => {
               setShowCreateComment(true);
-              setShowLikes(false);
             }}
             className="flex-1 flex justify-center items-center cursor-pointer max-xs:text-xs xs:text-xs sm:text-sm lg:text-base"
           >

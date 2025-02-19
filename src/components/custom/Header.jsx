@@ -177,27 +177,30 @@ const Header = ({ setItem, counter, setCounter }) => {
             </Link>
           )}
 
-          <button
-            name="BurgerMenu"
-            onClick={() => setOpenBurgerMenu(!openBurgerMenu)}
-            className={`flex items-center justify-center cursor-pointer max-md:w-8 max-md:h-8 max-sm:w-6 max-sm:h-6 max-sm360:w-5 max-sm360:h-5 md:hidden rounded-full duration-150 ${
-              mode === "light"
-                ? " hover:bg-light-modeButtonBackground text-light-modeButtonIcon"
-                : " hover:bg-dark-modeButtonBackground text-dark-modeButtonIcon"
-            } `}
-          >
-            {openBurgerMenu ? (
-              <AiOutlineClose
-                size={isSmallerThan360 ? 14 : isSmallerThan640 ? 16 : 24}
-                className=""
-              />
-            ) : (
-              <MdMenu
-                size={isSmallerThan360 ? 14 : isSmallerThan640 ? 16 : 24}
-                className=""
-              />
-            )}
-          </button>
+          {user && (
+            <button
+              name="BurgerMenu"
+              onClick={() => setOpenBurgerMenu(!openBurgerMenu)}
+              className={`flex items-center justify-center cursor-pointer max-md:w-8 max-md:h-8 max-sm:w-6 max-sm:h-6 max-sm360:w-5 max-sm360:h-5 md:hidden rounded-full duration-150 ${
+                mode === "light"
+                  ? " hover:bg-light-modeButtonBackground text-light-modeButtonIcon"
+                  : " hover:bg-dark-modeButtonBackground text-dark-modeButtonIcon"
+              } `}
+            >
+              {openBurgerMenu ? (
+                <AiOutlineClose
+                  size={isSmallerThan360 ? 14 : isSmallerThan640 ? 16 : 24}
+                  className=""
+                />
+              ) : (
+                <MdMenu
+                  size={isSmallerThan360 ? 14 : isSmallerThan640 ? 16 : 24}
+                  className=""
+                />
+              )}
+            </button>
+          )}
+
           {user ? (
             userProfileImage && (
               <div name="profile" className="flex max-md:hidden">
@@ -221,7 +224,7 @@ const Header = ({ setItem, counter, setCounter }) => {
           ) : (
             <Link
               href="/register"
-              className={`duration-150 py-1 px-2 rounded-md max-xs:text-xs xs:text-xs sm:text-sm lg:base ${
+              className={`duration-150 max-sm480:px-1.5 ml-1 py-0 sm480:py-1 px-2 rounded-md max-xs:text-xs xs:text-xs sm:text-sm lg:base ${
                 mode === "light"
                   ? "bg-light-primary text-dark-text hover:text-light-text"
                   : "bg-dark-primary text-light-text hover:text-dark-text"

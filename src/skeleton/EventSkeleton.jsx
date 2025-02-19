@@ -25,34 +25,26 @@ export default function EventSkeleton() {
           <div
             style={{ display: "flex", flexDirection: "column", rowGap: "3px" }}
           >
-            {/* Post title */}
+            {/* Event title */}
             <Skeleton width={90} height={20} />
             {/* Time or date */}
             <Skeleton width={40} height={15} />
           </div>
         </div>
 
-        {/* Post description */}
+        {/* Event description */}
 
         <Skeleton width="95%" height={20} count={2} />
 
-        {/* Post content skeleton */}
-        {/* For content with 1, 2, 3, or 4 items, we create loading skeletons */}
-        <div className="grid grid-cols-1">
-          <div className="h-[250px] col-span-1 sm:h-[350px] lg:h-[450px]rounded-lg">
-            <Skeleton height="100%" />
-          </div>
+        {/* Event content skeleton */}
+        {/* For content */}
+        <div className="w-full h-[350px] sm:h-[400px] lg:h-[450px]">
+          <Skeleton height="100%" />
         </div>
 
         {/* Like & Comment Skeletons */}
-        <div className="grid grid-cols-2 gap-x-2">
-          <div className="col-span-1">
-            <Skeleton width="100%" height={24} />
-          </div>
-          <div className="col-span-1">
-            <Skeleton width="100%" height={24} />
-          </div>
-        </div>
+
+        <Skeleton width="100%" height={24} />
 
         {/* Divider */}
         <span
@@ -62,14 +54,7 @@ export default function EventSkeleton() {
         />
 
         {/* Action buttons skeleton */}
-        <div className="grid grid-cols-2 gap-x-2">
-          <div className="col-span-1">
-            <Skeleton width="100%" height={30} />
-          </div>
-          <div className="col-span-1">
-            <Skeleton width="100%" height={30} />
-          </div>
-        </div>
+        <Skeleton width="100%" height={30} />
       </div>
     </SkeletonTheme>
   );

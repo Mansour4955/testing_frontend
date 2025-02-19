@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "next-i18next";
 import { BiLike, BiSolidLike } from "react-icons/bi";
 import { useMediaQuery } from "react-responsive";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 export default function Reaction({
   parent,
@@ -13,31 +14,24 @@ export default function Reaction({
   setComment,
   commentId,
 }) {
-  const { t, i18n } = useTranslation();
+  const { getItem } = useLocalStorage("userData");
+  const userData = getItem();
+
+  const { t } = useTranslation();
   const isSmallerThan360 = useMediaQuery({ query: "(max-width: 360px)" });
   const isSmallerThan480 = useMediaQuery({ query: "(max-width: 480px)" });
   const isSmallerThan640 = useMediaQuery({ query: "(max-width: 640px)" });
-  // State to track language change
-  const [currentLanguage, setCurrentLanguage] = useState(i18n.language);
 
-  // Update language when `i18n.language` changes
-  useEffect(() => {
-    setCurrentLanguage(i18n.language);
-  }, [i18n.language]);
-
-  const myId = "6771caff3ff48cf747a16823";
-  const isUserReacted = likes.find((like) => like._id === myId);
-
-  const token =
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzFjYWZmM2ZmNDhjZjc0N2ExNjgyMyIsInJvbGUiOiJub3JtYWxfcHJvZmVzc2lvbmFsIiwiaWF0IjoxNzM3NjEwMjAzfQ.11m55Oxnuq8ahbKgJAh801AGUEskxn5cv4RzOY2WrVU";
+  const isUserReacted = likes.find((like) => like._id === userData?.id);
 
   const eventToggleLike = async () => {
     try {
       const res = await axios.patch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/likes/${eventId}`,
+        {},
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+            Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
           },
         }
       );
@@ -47,13 +41,14 @@ export default function Reaction({
       console.log("Error event toggle like: ", err.message);
     }
   };
-  const commentToggleLike = async (reactionType) => {
+  const commentToggleLike = async () => {
     try {
       const res = await axios.patch(
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/comments/likes/${commentId}`,
+        {},
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+            Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
           },
         }
       );
