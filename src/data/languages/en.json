@@ -59,7 +59,15 @@
       "cPassword": "Confirm Password should match the password"
     },
     "placeholders": {
-      "writeComment": "Write Comment"
-    }
+      "writeComment": "Write Comment",
+      "selectStatus": "Select Status",
+      "updateStatus": "Update Status (optional)"
+    },
+    "status": [
+      { "value": "scheduled", "label": "scheduled" },
+      { "value": "ongoing", "label": "ongoing" },
+      { "value": "completed", "label": "completed" },
+      { "value": "cancelled", "label": "cancelled" }
+    ]
   }
 }

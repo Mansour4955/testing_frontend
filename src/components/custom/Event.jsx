@@ -13,6 +13,7 @@ import Reaction from "./Reaction";
 import { useMediaQuery } from "react-responsive";
 import JoinLeaveEvent from "./JoinLeaveEvent";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import Select from "./Select";
 
 // Lazy load the component
 
@@ -46,6 +47,7 @@ export default function Event({
   const [updatedDescription, setUpdatedDescription] = useState(
     event.description
   );
+  const [status, setStatus] = useState(event.status);
   const [hostProfile, setHostProfile] = useState(null);
   const isSmallerThan360 = useMediaQuery({ query: "(max-width: 360px)" });
   const isSmallerThan480 = useMediaQuery({ query: "(max-width: 480px)" });
@@ -104,15 +106,15 @@ export default function Event({
     }
   };
   const handleUpdateEventReqeust = async () => {
-    if (event.description === updatedDescription) {
+    if (event.description === updatedDescription && status === event.status) {
       console.log(
-        "Description didn't change, change something to update or cancel"
+        "Nothing didn't change, change something to update or cancel"
       );
     } else {
       try {
         const res = await axios.patch(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events/${event._id}`,
-          { description: updatedDescription },
+          { description: updatedDescription, status },
           {
             headers: {
               Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
@@ -127,6 +129,16 @@ export default function Event({
       }
     }
   };
+  const handleChange = (selectedOption) => {
+    if (selectedOption) {
+      setStatus(selectedOption.value);
+    }
+  };
+  const statusArray = t("status", { returnObjects: true });
+  const statusOptions = statusArray.map((option) => ({
+    value: option.value,
+    label: option.label,
+  }));
 
   return (
     <div className="max-xs:w-[95%] xs:w-[95%] sm360:w-[95%] sm480:w-[95%] sm:w-[95%] md:w-[90%] lg:w-[85%] ">
@@ -189,6 +201,17 @@ export default function Event({
                   value={updatedDescription}
                   onChange={(e) => setUpdatedDescription(e.target.value)}
                 />
+                <div className={`left-0 right-0`}>
+                  <Select
+                    fontSize={isSmallerThan480 ? "12px" : "13px"}
+                    options={statusOptions}
+                    onChange={handleChange}
+                    height="40vh"
+                    mode={mode}
+                    width="100%"
+                    placeholder={t("placeholders.updateStatus")}
+                  />
+                </div>
                 <div className="flex gap-x-2">
                   <span
                     onClick={() => setShowUpdateEvent(false)}
@@ -254,7 +277,7 @@ export default function Event({
               </p>
               <span
                 className={`max-xs:text-[10px] xs:text-[10px] sm:text-xs lg:text-sm font-normal ${
-                  event.status === ("cancelled" || "completed")
+                  event.status === "cancelled" || event.status === "completed"
                     ? mode === "light"
                       ? "text-light-red"
                       : "text-dark-red"
@@ -272,7 +295,7 @@ export default function Event({
             </div>
           </div>
           <div className="flex gap-x-3">
-            {event.host._id !== userData?.myId && (
+            {event.host._id !== userData?.id && (
               <JoinLeaveEvent mode={mode} setEvent={setEvent} event={event} />
             )}
             <div className="flex gap-x-0.5">
@@ -291,7 +314,7 @@ export default function Event({
                 }
               />
             </div>
-            {event.host._id === userData?.myId && (
+            {event.host._id === userData?.id && (
               <div className={`${showOptionsPopup && "relative z-30"}`}>
                 {showOptionsPopup ? (
                   <span onClick={() => setShowOptionsPopup(false)}>

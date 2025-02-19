@@ -30,7 +30,6 @@ export default function Comment({
 
   const { getItem } = useLocalStorage("userData");
   const userData = getItem();
-  const { token, id: myId } = userData;
   const profileImageOfCommentOwner = getProfileImage(comment.user);
   const formattedDate = luxonEvent(comment.createdAt);
 
@@ -50,7 +49,7 @@ export default function Comment({
         `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/comments/${comment._id}`,
         {
           headers: {
-            Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+            Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
           },
         }
       );
@@ -73,7 +72,7 @@ export default function Comment({
           { comment: updatedComment },
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+              Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
             },
           }
         );
@@ -221,7 +220,7 @@ export default function Comment({
                   <p className="max-xs:text-[10px] xs:text-[10px] sm:text-xs lg:text-sm">
                     {formattedDate}
                   </p>
-                  {comment.user._id === myId && (
+                  {comment.user._id === userData?.myId && (
                     <div className={`${showOptionsPopup && "relative"}`}>
                       {showOptionsPopup ? (
                         <span onClick={() => setShowOptionsPopup(false)}>
