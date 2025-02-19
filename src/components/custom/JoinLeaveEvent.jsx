@@ -11,13 +11,15 @@ export default function JoinLeaveEvent({ mode, setEvent, event }) {
     <div className="max-xs:text-xs xs:text-xs sm:text-sm lg:text-base">
       {isUSerParticipant ? (
         <span
-          className={`py-0.5 px-2 rounded-md ${mode === "light" ? "bg-light-red" : "bg-dark-red"}`}
+          className={`py-0.5 cursor-pointer px-2 rounded-md text-dark-text hover:text-light-text duration-100 ${
+            mode === "light" ? "bg-light-red" : "bg-dark-red"
+          }`}
         >
           {t("words.leave")}
         </span>
       ) : (
         <span
-          className={`py-0.5 px-2 rounded-md ${
+          className={`py-0.5 cursor-pointer px-2 rounded-md text-dark-text hover:text-light-text duration-100 ${
             mode === "light" ? "bg-light-secondary" : "bg-dark-secondary"
           }`}
         >

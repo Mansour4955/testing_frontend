@@ -9,16 +9,18 @@ import { useSelector } from "react-redux";
 import { useTranslation } from "next-i18next";
 import { usePathname } from "next/navigation"; // Import usePathname
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { motion, AnimatePresence } from "framer-motion";
+import getProfileImage from "@/helpers/getProfileImage";
 const Header = ({ setItem, counter, setCounter }) => {
   const router = useRouter();
   const isSmallerThan640 = useMediaQuery({ query: "(max-width: 640px)" });
   const isSmallerThan360 = useMediaQuery({ query: "(max-width: 360px)" });
 
-  const isLoggedIn = true;
+  const { user } = useSelector((state) => state.user);
   const [openBurgerMenu, setOpenBurgerMenu] = useState(false);
+  const [userProfileImage, setUserProfileImage] = useState(null);
   const { t } = useTranslation();
   const { mode } = useSelector((state) => state.settings);
   const toggleDarkMode = () => {
@@ -27,8 +29,12 @@ const Header = ({ setItem, counter, setCounter }) => {
     setCounter(counter + 1);
   };
   const pathname = usePathname(); // Get the current path using usePathname
-
-
+  const handleClickProfileImage = () => {
+    router.push("/myProfile");
+}
+  useEffect(() => {
+    if (user) setUserProfileImage(getProfileImage(user));
+  }, [user]);
   return (
     <header
       className={`fixed top-0 left-0 right-0 flex p-4 duration-150 max-md:p-2 shadow-md opacity-[0.95.5] z-50
@@ -62,7 +68,7 @@ const Header = ({ setItem, counter, setCounter }) => {
             >
               {t("headers.home")}
             </Link>
-            {isLoggedIn && (
+            {user && (
               <Link
                 href="/events"
                 onClick={() => setOpenBurgerMenu(false)}
@@ -75,7 +81,7 @@ const Header = ({ setItem, counter, setCounter }) => {
                 {t("headers.events")}
               </Link>
             )}
-            {isLoggedIn && (
+            {user && (
               <Link
                 href="/myProfile"
                 onClick={() => setOpenBurgerMenu(false)}
@@ -114,19 +120,21 @@ const Header = ({ setItem, counter, setCounter }) => {
           >
             {t("headers.home")}
           </Link>
-          <Link
-            href="/events"
-            className={`font-medium md:text-lg duration-150 ${
-              mode === "light"
-                ? "hover:text-light-primary"
-                : "hover:text-dark-primary"
-            } ${
-              (pathname === "/events" || pathname.startsWith("/events")) &&
-              (mode === "light" ? "text-light-primary" : "text-dark-primary")
-            }`}
-          >
-            {t("headers.events")}
-          </Link>
+          {user && (
+            <Link
+              href="/events"
+              className={`font-medium md:text-lg duration-150 ${
+                mode === "light"
+                  ? "hover:text-light-primary"
+                  : "hover:text-dark-primary"
+              } ${
+                (pathname === "/events" || pathname.startsWith("/events")) &&
+                (mode === "light" ? "text-light-primary" : "text-dark-primary")
+              }`}
+            >
+              {t("headers.events")}
+            </Link>
+          )}
         </nav>
 
         <div className="flex justify-center items-center gap-x-0">
@@ -153,18 +161,22 @@ const Header = ({ setItem, counter, setCounter }) => {
               />
             )}
           </button>
-          <button
-            name="Notifications"
-            className={`flex items-center justify-center lg:w-10 lg:h-10 max-lg:w-9 max-lg:h-9 max-md:w-8 max-md:h-8 max-sm:w-6 max-sm:h-6 max-sm360:w-5 max-sm360:h-5 rounded-full duration-150 ${
-              mode === "light"
-                ? " hover:bg-light-modeButtonBackground text-light-modeButtonIcon"
-                : " hover:bg-dark-modeButtonBackground text-dark-modeButtonIcon"
-            } `}
-          >
-            <IoIosNotifications
-              size={isSmallerThan360 ? 16 : isSmallerThan640 ? 18 : 26}
-            />
-          </button>
+          {user && (
+            <Link
+              href="notifications"
+              name="Notifications"
+              className={`flex items-center justify-center lg:w-10 lg:h-10 max-lg:w-9 max-lg:h-9 max-md:w-8 max-md:h-8 max-sm:w-6 max-sm:h-6 max-sm360:w-5 max-sm360:h-5 rounded-full duration-150 ${
+                mode === "light"
+                  ? " hover:bg-light-modeButtonBackground text-light-modeButtonIcon"
+                  : " hover:bg-dark-modeButtonBackground text-dark-modeButtonIcon"
+              } `}
+            >
+              <IoIosNotifications
+                size={isSmallerThan360 ? 16 : isSmallerThan640 ? 18 : 26}
+              />
+            </Link>
+          )}
+
           <button
             name="BurgerMenu"
             onClick={() => setOpenBurgerMenu(!openBurgerMenu)}
@@ -186,23 +198,37 @@ const Header = ({ setItem, counter, setCounter }) => {
               />
             )}
           </button>
-          {isLoggedIn && (
-            <div name="profile" className="flex max-md:hidden">
-              <span
-                className={`lg:h-10 w-[2px] max-lg:h-9 max-md:h-8 mx-1 ${
-                  mode === "light" ? "bg-light-primary" : "bg-dark-primary"
-                }`}
-              />
-              <Image
-                src="/profile.png"
-                width={100}
-                height={100}
-                alt="profilePhoto"
-                className={`lg:w-10 lg:h-10 rounded-full max-lg:w-9 max-lg:h-9 ${
-                  t("dir") === "ltr" ? "ml-3" : "mr-3"
-                }`}
-              />
-            </div>
+          {user ? (
+            userProfileImage && (
+              <div name="profile" className="flex max-md:hidden">
+                <span
+                  className={`lg:h-10 w-[2px] max-lg:h-9 max-md:h-8 mx-1 ${
+                    mode === "light" ? "bg-light-primary" : "bg-dark-primary"
+                  }`}
+                />
+                <Image
+                  onClick={handleClickProfileImage}
+                  src={userProfileImage}
+                  width={100}
+                  height={100}
+                  alt="profilePhoto"
+                  className={`lg:w-10 lg:h-10 rounded-full max-lg:w-9 max-lg:h-9 cursor-pointer ${
+                    t("dir") === "ltr" ? "ml-3" : "mr-3"
+                  }`}
+                />
+              </div>
+            )
+          ) : (
+            <Link
+              href="/register"
+              className={`duration-150 py-1 px-2 rounded-md max-xs:text-xs xs:text-xs sm:text-sm lg:base ${
+                mode === "light"
+                  ? "bg-light-primary text-dark-text hover:text-light-text"
+                  : "bg-dark-primary text-light-text hover:text-dark-text"
+              }`}
+            >
+              {t("words.register")}
+            </Link>
           )}
         </div>
       </div>

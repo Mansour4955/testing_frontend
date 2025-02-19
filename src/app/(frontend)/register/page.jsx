@@ -5,6 +5,9 @@ import { IoCloudUploadSharp } from "react-icons/io5";
 import { useMediaQuery } from "react-responsive";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function Register() {
   const { t } = useTranslation();
@@ -13,6 +16,7 @@ export default function Register() {
   const isSmallerThan640 = useMediaQuery({ query: "(max-width: 640px)" });
   const [profileImage, setProfileImage] = useState(null);
   const { mode } = useSelector((state) => state.settings);
+  const router = useRouter();
 
   // React Hook Form initialization
   const {
@@ -26,18 +30,75 @@ export default function Register() {
   const password = watch("password"); // Watch the password field
   const cPassword = watch("cPassword"); // Watch the confirm password field
 
-const handleFileChange = (e) => {
-  const file = e.target.files[0]; // Get the first file
-  if (file) {
-    setProfileImage(file); // Store the file
-    setValue("profileImage", file); // Update value in React Hook Form
-    console.log("File selected.", file);
-  } else {
-    console.log("No file selected.");
-  }
-};
-  const handleFormSubmit = (data) => {
-    console.log(data); // Log data if all fields are valid
+  const handleFileChange = (e) => {
+    const file = e.target.files[0]; // Get the first file
+    if (file) {
+      setProfileImage(file); // Store the file
+      setValue("profileImage", file); // Update value in React Hook Form
+      console.log("File selected.", file);
+    } else {
+      console.log("No file selected.");
+    }
+  };
+
+  const handleFormSubmit = async (data) => {
+    try {
+      // Extract the first file from FileList
+      const profileImage =
+        data.profileImage instanceof FileList
+          ? data.profileImage[0]
+          : data.profileImage;
+
+      let res;
+      if (profileImage && profileImage.size > 0) {
+        const formData = new FormData();
+        formData.append("profileImage", profileImage);
+        formData.append("firstName", data.firstName);
+        formData.append("lastName", data.lastName);
+        formData.append("email", data.email);
+        formData.append("password", data.password);
+
+        // Log FormData properly
+        for (let [key, value] of formData.entries()) {
+          console.log(`${key}:`, value);
+        }
+
+        // Send form data (multipart/form-data)
+        res = await axios.post(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user-auth/register`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+      } else {
+        const userData = {
+          firstName: data.firstName,
+          lastName: data.lastName,
+          email: data.email,
+          password: data.password,
+        };
+        console.log("userData:", userData);
+
+        // Send JSON data (application/json)
+        res = await axios.post(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/user-auth/register`,
+          userData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+      }
+
+      console.log("Response:", res.data);
+      router.push("/login");
+    } catch (error) {
+      console.error("Error submitting form:", error.message);
+    }
   };
 
   return (
@@ -234,7 +295,7 @@ const handleFileChange = (e) => {
                   mode === "light" ? "text-light-red" : "text-dark-red"
                 } text-sm`}
               >
-                {errors.cPassword?.message}
+                {t("errors.cPassword")}
               </p>
             )}
           </div>
@@ -276,7 +337,7 @@ const handleFileChange = (e) => {
                 onChange={handleFileChange} // Handle file change
               />
             </div>
-            {profileImage  && (
+            {profileImage && (
               <p className="w-full text-center max-xs:text-xs xs:text-xs sm:text-sm lg:text-base">
                 {profileImage.name}
               </p>
@@ -294,6 +355,17 @@ const handleFileChange = (e) => {
             {t("words.register")}
           </button>
         </form>
+        <p className="max-xs:text-[10px] xs:text-[10px] sm:text-xs lg:text-sm mt-1 flex gap-x-1 px-2">
+          {t("sentences.alreadyHaveAnAccount")}
+          <Link
+            href="/login"
+            className={`underline ${
+              mode === "light" ? "text-light-primary" : "text-dark-primary"
+            }`}
+          >
+            {t("sentences.clickHere")}
+          </Link>
+        </p>
       </div>
     </div>
   );
