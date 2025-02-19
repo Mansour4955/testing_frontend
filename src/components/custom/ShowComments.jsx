@@ -11,7 +11,7 @@ export default function ShowComments({
   setShowCreateComment,
   setShowComments,
   mode,
-  postId,
+  eventId,
   authorId,
   createCommentCount,
   showCreateComment,
@@ -32,7 +32,7 @@ export default function ShowComments({
       setLoading(true);
       try {
         const res = await axios(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/comments?postId=${postId}&page=1`
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/comments?eventId=${eventId}&page=1`
         );
         setComments(res.data.comments || []);
         setHasMore(res.data.hasMore || false);
@@ -46,7 +46,7 @@ export default function ShowComments({
     };
 
     getComments();
-  }, [postId, createCommentCount, deleteCommentCount]);
+  }, [eventId, createCommentCount, deleteCommentCount]);
 
   // Fetch more comments
   const fetchMoreComments = async () => {
@@ -54,7 +54,7 @@ export default function ShowComments({
     setLoading(true);
     try {
       const res = await axios(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/comments?postId=${postId}&page=${page}`
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/comments?eventId=${eventId}&page=${page}`
       );
       setComments((prev) => [...prev, ...(res.data.comments || [])]);
       setPage((prev) => prev + 1);
