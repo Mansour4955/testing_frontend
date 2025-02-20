@@ -57,6 +57,9 @@ export default function Event({
     const image = getProfileImage(event.host);
     setHostProfile(image);
   }, []);
+  useEffect(() => {
+    setEvent(eventData);
+  }, [eventData]);
   // const userTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone; // Dynamic timezone
   const formattedDate = luxonEvent(event.createdAt);
 
@@ -369,7 +372,7 @@ export default function Event({
         <div className="flex flex-col gap-y-2">
           <div className="max-xs:text-xs xs:text-xs sm:text-sm lg:text-base flex flex-col gap-y-1">
             <p className="max-xs:text-sm xs:text-sm sm:text-base lg:text-lg flex items-center gap-x-1">
-              (<span className="capitalize">{eventData.access}</span>
+              (<span className="capitalize">{event.access}</span>
               <span>{event.category}</span>)
             </p>
             <p>{event.description}</p>

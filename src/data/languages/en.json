@@ -21,6 +21,7 @@
     },
     "sentences": {
       "noEventsFound": "No events found",
+      "noNotificationsFound": "No notifications found",
       "deleteEventMessage": "Are you sure you want to delete this event!",
       "uploadProfileImage": "Upload profile image (optional)",
       "alreadyHaveAnAccount": "Already have an account?",
