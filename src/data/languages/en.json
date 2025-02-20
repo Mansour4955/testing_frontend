@@ -49,14 +49,25 @@
       "password": "Password",
       "cPassword": "Confirm Password",
       "edited": "Edited",
-      "deleteCommentMessage": "Are you sure you want to delete this comment"
+      "deleteCommentMessage": "Are you sure you want to delete this comment",
+      "accessOnlyTo": "Access only to",
+      "content": "Content",
+      "access": "Access",
+      "category": "Category",
+      "maxParticipants": "Max participants",
+      "location": "Location",
+      "date": "Date",
+      "description": "Description",
+      "create": "Create",
+      "createEvent": "Create Event"
     },
     "errors": {
       "firstName": "First Name should not be empty",
       "lastName": "Last Name should not be empty",
       "email": "Email should not be empty",
       "password": "Password should not be empty",
-      "cPassword": "Confirm Password should match the password"
+      "cPassword": "Confirm Password should match the password",
+      "accessOnlyTo": "At least give access to one person"
     },
     "placeholders": {
       "writeComment": "Write Comment",
@@ -68,6 +79,18 @@
       { "value": "ongoing", "label": "ongoing" },
       { "value": "completed", "label": "completed" },
       { "value": "cancelled", "label": "cancelled" }
+    ],
+    "access": [
+      { "value": "public", "label": "Public" },
+      { "value": "private", "label": "Private" }
+    ],
+    "category": [
+      { "value": "conference", "label": "Conference" },
+      { "value": "workshop", "label": "Workshop" },
+      { "value": "meetup", "label": "Meetup" },
+      { "value": "seminar", "label": "Seminar" },
+      { "value": "webinar", "label": "Webinar" },
+      { "value": "social", "label": "Social" }
     ]
   }
 }

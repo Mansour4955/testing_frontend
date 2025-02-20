@@ -13,7 +13,7 @@ const Event = dynamic(() => import("./Event"), {
   loading: () => <EventSkeleton />, // Fallback UI
 });
 
-export default function Events({ parent, filter = "all" }) {
+export default function Events({ parent, filter = "all", createEventCount }) {
   const { getItem } = useLocalStorage("userData");
   const userData = getItem();
   const { t } = useTranslation();
@@ -36,7 +36,7 @@ export default function Events({ parent, filter = "all" }) {
               )
             : parent === "eventsPage"
             ? await axios(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events?page=${page}&filter=${filter}`,
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events?page=1&filter=${filter}`,
                 {
                   headers: {
                     Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
@@ -57,7 +57,7 @@ export default function Events({ parent, filter = "all" }) {
       }
     };
     getevents();
-  }, [deleteEventCount]);
+  }, [deleteEventCount, filter, createEventCount]);
 
   // Fetch more events
   const fetchMoreEvents = async () => {
