@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 export default function Register() {
   const { t } = useTranslation();
@@ -93,10 +94,11 @@ export default function Register() {
           }
         );
       }
-
+      toast.success(t("logs.registeredSuccess"));
       console.log("Response:", res.data);
       router.push("/login");
     } catch (error) {
+      toast.error(t("logs.registeredError"));
       console.error("Error submitting form:", error.message);
     }
   };

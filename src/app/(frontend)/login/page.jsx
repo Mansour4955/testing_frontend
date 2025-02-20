@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Link from "next/link";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const { t } = useTranslation();
@@ -36,11 +37,12 @@ export default function Login() {
           },
         }
       );
-
+      toast.success(t("logs.loginSuccess"));
       const { message, ...userDataToBeStored } = res.data;
       setItem(userDataToBeStored);
       window.location.href = "/";
     } catch (error) {
+      toast.error(t("logs.loginError"));
       console.error("Error submitting form:", error.message);
     }
   };

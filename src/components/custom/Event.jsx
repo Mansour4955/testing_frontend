@@ -14,6 +14,7 @@ import { useMediaQuery } from "react-responsive";
 import JoinLeaveEvent from "./JoinLeaveEvent";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 import Select from "./Select";
+import { toast } from "react-toastify";
 
 // Lazy load the component
 
@@ -104,15 +105,18 @@ export default function Event({
       console.log("Delete an event response: ", res.data);
       setShowDeleteEvent(false);
       setDeleteEventCount(deleteEventCount + 1);
+      toast.success(t("logs.eventDeleteSuccess"));
     } catch (err) {
+      toast.error(t("logs.eventDeleteError"));
       console.log("Error delete an event: ", err.message);
     }
   };
   const handleUpdateEventReqeust = async () => {
     if (event.description === updatedDescription && status === event.status) {
       console.log(
-        "Nothing didn't change, change something to update or cancel"
+        "Nothing change, change something to update or cancel"
       );
+      toast.error(t("logs.didntChangeAnything"));
     } else {
       try {
         const res = await axios.patch(
@@ -127,7 +131,9 @@ export default function Event({
         console.log("Update the event response: ", res.data);
         setEvent(res.data);
         setShowUpdateEvent(false);
+        toast.success(t("logs.eventUpdateSuccess"));
       } catch (err) {
+        toast.error(t("logs.eventUpdateError"));
         console.log("Error updating the event: ", err.message);
       }
     }

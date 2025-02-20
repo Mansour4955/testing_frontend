@@ -2,6 +2,7 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 import axios from "axios";
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { toast } from "react-toastify";
 
 export default function JoinLeaveEvent({ mode, setEvent, event }) {
   const { t } = useTranslation();
@@ -81,8 +82,10 @@ export default function JoinLeaveEvent({ mode, setEvent, event }) {
       );
       setEvent(res.data.event);
       console.log("Join event response: ", res.data);
+      toast.success(t("logs.joinedEventSuccess"));
       sendJoinNotification();
     } catch (err) {
+      toast.error(t("logs.joinedEventError"));
       console.log("Error joining the event: ", err.message);
     }
   };
@@ -98,9 +101,11 @@ export default function JoinLeaveEvent({ mode, setEvent, event }) {
         }
       );
       setEvent(res.data.event);
+      toast.success(t("logs.leavedEventSuccess"));
       sendLeaveNotification();
       console.log("Join event response: ", res.data);
     } catch (err) {
+      toast.error(t("logs.leavedEventError"));
       console.log("Error joining the event: ", err.message);
     }
   };

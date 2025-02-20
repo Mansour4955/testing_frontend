@@ -129,7 +129,20 @@
       "plsEnterComment": "Please enter comment",
       "allRequiredFieldsMustBeFilled": "All required fields must be filled.",
       "eventCreatedSuccess": "Event created successfully",
-      "eventCreatedError": "Failed to create event"
+      "eventCreatedError": "Failed to create event",
+      "eventUpdateSuccess": "Event updated successfully",
+      "eventUpdateError": "Failed to update event",
+      "eventDeleteSuccess": "Event deleted successfully",
+      "eventDeleteError": "Failed to delete event",
+      "didntChangeAnything": "Change something to update or cancel",
+      "joinedEventSuccess": "Joined event successfully",
+      "joinedEventError": "Failed to join event",
+      "leavedEventSuccess": "Leaved event successfully",
+      "leavedEventError": "Failed to leave event",
+      "registeredSuccess": "Registered successfully",
+      "registeredError": "Failed to register",
+      "loginSuccess": "Logged in successfully",
+      "loginError": "Failed to login"
     }
   }
 }
