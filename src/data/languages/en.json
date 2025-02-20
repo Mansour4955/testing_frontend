@@ -72,7 +72,8 @@
     "placeholders": {
       "writeComment": "Write Comment",
       "selectStatus": "Select Status",
-      "updateStatus": "Update Status (optional)"
+      "updateStatus": "Update Status (optional)",
+      "accessOnlyToPlaceholder": "User ID (comma separated)"
     },
     "status": [
       { "value": "scheduled", "label": "scheduled" },

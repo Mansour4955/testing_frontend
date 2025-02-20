@@ -47,9 +47,15 @@ export default function CreateEvent({ createEventCount, setCreateEventCount }) {
       eventData.append("category", data.category);
       eventData.append("access", data.access);
 
-      if (data.access === "private" && data.accessOnlyTo.length > 0) {
-        eventData.append("accessOnlyTo", JSON.stringify(data.accessOnlyTo));
-      }
+   if (data.access === "private" && data.accessOnlyTo.length > 0) {
+     const accessOnlyToArray = data.accessOnlyTo
+       .split(",")
+       .map((id) => id.trim()); // Ensure no spaces
+
+     accessOnlyToArray.forEach((id) => {
+       eventData.append("accessOnlyTo[]", id); // Append each ID separately
+     });
+   }
 
       if (data.content.length > 0) {
         eventData.append("content", data.content[0]);
@@ -71,7 +77,8 @@ export default function CreateEvent({ createEventCount, setCreateEventCount }) {
       console.error("Error submitting form:", error.message);
     }
   };
-
+  const accessArray = t("access", { returnObjects: true });
+  const categoryArray = t("category", { returnObjects: true });
   return (
     <div className="flex justify-center">
       <div
@@ -208,12 +215,11 @@ export default function CreateEvent({ createEventCount, setCreateEventCount }) {
               {...register("category", { required: true })}
               className="p-2 border-2 rounded-md text-light-text outline-none"
             >
-              <option value="conference">Conference</option>
-              <option value="workshop">Workshop</option>
-              <option value="meetup">Meetup</option>
-              <option value="seminar">Seminar</option>
-              <option value="webinar">Webinar</option>
-              <option value="social">Social</option>
+              {categoryArray.map((cat, index) => (
+                <option key={index} value={cat.value}>
+                  {cat.label}
+                </option>
+              ))}
             </select>
             {errors.category && (
               <span className="text-red-500">{t("errors.category")}</span>
@@ -230,8 +236,11 @@ export default function CreateEvent({ createEventCount, setCreateEventCount }) {
               onChange={(e) => setAccessType(e.target.value)}
               className="p-2 border-2 rounded-md text-light-text outline-none"
             >
-              <option value="public">Public</option>
-              <option value="private">Private</option>
+              {accessArray.map((acc, index) => (
+                <option key={index} value={acc.value}>
+                  {acc.label}
+                </option>
+              ))}
             </select>
             {errors.access && (
               <span className="text-red-500">{t("errors.access")}</span>
@@ -246,7 +255,7 @@ export default function CreateEvent({ createEventCount, setCreateEventCount }) {
               </label>
               <input
                 type="text"
-                placeholder="User ID (comma separated)"
+                placeholder={t("placeholders.accessOnlyToPlaceholder")}
                 {...register("accessOnlyTo", {
                   required: accessType === "private",
                   validate: (value) =>
