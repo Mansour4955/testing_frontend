@@ -59,7 +59,8 @@
       "date": "Date",
       "description": "Description",
       "create": "Create",
-      "createEvent": "Create Event"
+      "createEvent": "Create Event",
+      "wannaCreateEvent": "Wanna create event?"
     },
     "errors": {
       "firstName": "First Name should not be empty",
