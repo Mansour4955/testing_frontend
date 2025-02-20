@@ -58,10 +58,12 @@ export default function CreateComment({
         setComment("");
         setCreateCommentCount(createCommentCount + 1);
         setShowComments(true);
-        sendCommentNotification();
+        if (host !== userData?.id) {
+          sendCommentNotification();
+        }
         toast.success(t("logs.commentCreateSuccess"));
       } catch (err) {
-         toast.error(t("logs.commentCreateError"));
+        toast.error(t("logs.commentCreateError"));
         console.log("Error create a comment: ", err.message);
       }
     } else {

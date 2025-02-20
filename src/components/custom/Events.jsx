@@ -152,7 +152,7 @@ export default function Events({ parent, filter = "all", createEventCount, statu
         </div>
       ) : (
         <p
-          className={`text-center font-semibold max-xs:text-sm xs:text-sm sm:text-base lg:text-lg`}
+          className={`text-center font-semibold max-xs:text-sm xs:text-sm mt-10 sm:text-base lg:text-lg`}
         >
           {t(`sentences.noEventsFound`)}
         </p>
