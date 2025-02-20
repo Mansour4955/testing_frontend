@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import profileImage from "../../../public/default_profile_image.webp";
 import axios from "axios";
 import { useTranslation } from "next-i18next";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
 export default function CreateComment({
+  host,
   mode,
   eventId,
   setShowCreateComment,
@@ -15,11 +15,34 @@ export default function CreateComment({
   const { t } = useTranslation();
   const { getItem } = useLocalStorage("userData");
   const userData = getItem();
-  const { token } = userData;
 
   const [isFocused, setIsFocused] = useState(false);
   const [comment, setComment] = useState("");
   const [errorComment, setErrorComment] = useState("");
+    const sendCommentNotification = async () => {
+
+      const recipient = [host];
+      const reference = {
+        referenceId: eventId,
+        referenceModel: "Comment",
+      };
+
+      const data = { recipient, notificationType: "comment", reference };
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/notifications`,
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
+            },
+          }
+        );
+        console.log("notification comment response: ", res.data);
+      } catch (err) {
+        console.log("Error posting notification comment: ", err.message);
+      }
+    };
   const handleSendComment = async () => {
     if (comment.trim() !== "") {
       try {
@@ -28,7 +51,7 @@ export default function CreateComment({
           { eventId, comment },
           {
             headers: {
-              Authorization: `Bearer ${token}`, // Pass the token in the Authorization header
+              Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
             },
           }
         );
@@ -36,6 +59,7 @@ export default function CreateComment({
         setComment("");
         setCreateCommentCount(createCommentCount + 1);
         setShowComments(true);
+        sendCommentNotification()
       } catch (err) {
         console.log("Error create a comment: ", err.message);
       }

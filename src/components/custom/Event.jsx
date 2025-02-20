@@ -144,7 +144,7 @@ export default function Event({
   }));
 
   return (
-    <div className="max-xs:w-[95%] xs:w-[95%] sm360:w-[95%] sm480:w-[95%] sm:w-[95%] md:w-[90%] lg:w-[85%] ">
+    <div className="max-xs:w-[95%] xs:w-[95%] sm360:w-[95%] sm480:w-[95%] sm:w-[95%] md:w-[90%] lg:w-[85%]">
       <div className="relative w-full">
         {(showDeleteEvent || showUpdateEvent) && (
           <div
@@ -459,6 +459,7 @@ export default function Event({
             )}
             {showCreateComment && (
               <CreateComment
+                host={event.host._id}
                 mode={mode}
                 eventId={event._id}
                 setShowCreateComment={setShowCreateComment}

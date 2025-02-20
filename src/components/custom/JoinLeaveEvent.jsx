@@ -10,7 +10,7 @@ export default function JoinLeaveEvent({ mode, setEvent, event }) {
   const isUSerParticipant = event.participants.find(
     (user) => (user._id ? user._id : user) === userData?.id
   );
-  const sendNotification = async () => {
+  const sendJoinNotification = async () => {
     const host = event.host._id ? event.host._id : event.host; // Extract the host ID
 
     // Add both the host and all participants to the recipient array
@@ -39,6 +39,35 @@ export default function JoinLeaveEvent({ mode, setEvent, event }) {
       console.log("Error posting notification joining: ", err.message);
     }
   };
+  const sendLeaveNotification = async () => {
+    const host = event.host._id ? event.host._id : event.host; // Extract the host ID
+
+    // Add both the host and all participants to the recipient array
+    const theParticipants = event.participants.map((user) =>
+      user._id ? user._id : user
+    );
+    const recipient = [host, ...theParticipants];
+    const reference = {
+      referenceId: event._id,
+      referenceModel: "Event",
+    };
+
+    const data = { recipient, notificationType: "leaved", reference };
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/notifications`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
+          },
+        }
+      );
+      console.log("notification leave response: ", res.data);
+    } catch (err) {
+      console.log("Error posting notification leaving: ", err.message);
+    }
+  };
   const handleJoinEvent = async () => {
     try {
       const res = await axios.patch(
@@ -52,7 +81,7 @@ export default function JoinLeaveEvent({ mode, setEvent, event }) {
       );
       setEvent(res.data.event);
       console.log("Join event response: ", res.data);
-      sendNotification();
+      sendJoinNotification();
     } catch (err) {
       console.log("Error joining the event: ", err.message);
     }
@@ -69,6 +98,7 @@ export default function JoinLeaveEvent({ mode, setEvent, event }) {
         }
       );
       setEvent(res.data.event);
+      sendLeaveNotification();
       console.log("Join event response: ", res.data);
     } catch (err) {
       console.log("Error joining the event: ", err.message);

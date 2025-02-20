@@ -16,6 +16,34 @@ export default function CreateEventForm({
   const { getItem } = useLocalStorage("userData");
   const userData = getItem();
 
+  const sendAccessOfferNotification = async (event) => {
+    // Add both the host and all participants to the recipient array
+    const accessOnlyToPpl = event.accessOnlyTo.map((user) =>
+      user._id ? user._id : user
+    );
+    const recipient = [...accessOnlyToPpl];
+    const reference = {
+      referenceId: event._id,
+      referenceModel: "Event",
+    };
+
+    const data = { recipient, notificationType: "access_offer", reference };
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/notifications`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
+          },
+        }
+      );
+      console.log("notification access_offer response: ", res.data);
+    } catch (err) {
+      console.log("Error posting notification access_offer: ", err.message);
+    }
+  };
+
   const {
     register,
     handleSubmit,
@@ -74,8 +102,11 @@ export default function CreateEventForm({
         }
       );
       setCreateEventCount(createEventCount + 1);
-      setShowAllInputs(false)
+      setShowAllInputs(false);
       console.log("Created event: ", res.data);
+      if (res.data.access === "private" && res.data.accessOnlyTo.length > 0) {
+        sendAccessOfferNotification(res.data);
+      }
     } catch (error) {
       console.error("Error submitting form:", error.message);
     }

@@ -94,12 +94,12 @@ export default function Notifications() {
   }, [lastNotificationRef, hasMore, loading]);
 
   return (
-    <div className="w-full">
+    <div className="w-full mt-3">
       {notifications.length > 0 ? (
-        <div className="flex flex-col items-center">
+        <div className="flex flex-col items-center gap-y-1">
           {notifications.map((notification, index) => (
             <div
-              className="min-w-full flex justify-center"
+              className="max-xs:w-[95%] xs:w-[95%] sm360:w-[95%] sm480:w-[95%] sm:w-[95%] md:w-[90%] lg:w-[85%]"
               key={index}
               ref={
                 index === notifications.length - 1 ? lastNotificationRef : null

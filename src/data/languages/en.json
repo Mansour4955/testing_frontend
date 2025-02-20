@@ -67,7 +67,8 @@
       "filter": "Filter",
       "eventType": "Event Type",
       "eventStatusType": "Event Status",
-      "all": "All"
+      "all": "All",
+      "hi": "Hi"
     },
     "errors": {
       "firstName": "First Name should not be empty",
@@ -109,6 +110,14 @@
       { "value": "public", "label": "Public events" },
       { "value": "in_private", "label": "Private event you joined" },
       { "value": "in_public", "label": "Public event you joined" }
-    ]
+    ],
+    "notificationActions":{
+      "leaved": "Leaved the event",
+      "joined": "Joined the event",
+      "reaction": "Reacted to the event",
+      "access_offer": "Gave you access to the event",
+      "reply": "Replied on your comment",
+      "comment": "Commented on your event"
+    } 
   }
 }
