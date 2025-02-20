@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { toast } from "react-toastify";
 
 export default function CreateEventForm({
   setCreateEventCount,
@@ -61,6 +62,7 @@ export default function CreateEventForm({
       !data.access
     ) {
       console.error("All required fields must be filled.");
+      toast.error(t("logs.allRequiredFieldsMustBeFilled"));
       return;
     }
 
@@ -103,11 +105,13 @@ export default function CreateEventForm({
       );
       setCreateEventCount(createEventCount + 1);
       setShowAllInputs(false);
+      toast.success(t("logs.eventCreatedSuccess"));
       console.log("Created event: ", res.data);
       if (res.data.access === "private" && res.data.accessOnlyTo.length > 0) {
         sendAccessOfferNotification(res.data);
       }
     } catch (error) {
+      toast.error(t("logs.eventCreatedError"));
       console.error("Error submitting form:", error.message);
     }
   };

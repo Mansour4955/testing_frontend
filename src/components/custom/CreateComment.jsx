@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useTranslation } from "next-i18next";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { toast } from "react-toastify";
 export default function CreateComment({
   host,
   mode,
@@ -18,31 +19,29 @@ export default function CreateComment({
 
   const [isFocused, setIsFocused] = useState(false);
   const [comment, setComment] = useState("");
-  const [errorComment, setErrorComment] = useState("");
-    const sendCommentNotification = async () => {
-
-      const recipient = [host];
-      const reference = {
-        referenceId: eventId,
-        referenceModel: "Comment",
-      };
-
-      const data = { recipient, notificationType: "comment", reference };
-      try {
-        const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/notifications`,
-          data,
-          {
-            headers: {
-              Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
-            },
-          }
-        );
-        console.log("notification comment response: ", res.data);
-      } catch (err) {
-        console.log("Error posting notification comment: ", err.message);
-      }
+  const sendCommentNotification = async () => {
+    const recipient = [host];
+    const reference = {
+      referenceId: eventId,
+      referenceModel: "Comment",
     };
+
+    const data = { recipient, notificationType: "comment", reference };
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/notifications`,
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
+          },
+        }
+      );
+      console.log("notification comment response: ", res.data);
+    } catch (err) {
+      console.log("Error posting notification comment: ", err.message);
+    }
+  };
   const handleSendComment = async () => {
     if (comment.trim() !== "") {
       try {
@@ -59,12 +58,14 @@ export default function CreateComment({
         setComment("");
         setCreateCommentCount(createCommentCount + 1);
         setShowComments(true);
-        sendCommentNotification()
+        sendCommentNotification();
+        toast.success(t("logs.commentCreateSuccess"));
       } catch (err) {
+         toast.error(t("logs.commentCreateError"));
         console.log("Error create a comment: ", err.message);
       }
     } else {
-      setErrorComment("Please enter a comment");
+      toast.error(t("logs.plsEnterComment"));
       console.log("errorComment: ", "Please enter a comment");
     }
   };
@@ -83,7 +84,6 @@ export default function CreateComment({
           value={comment}
           onChange={(e) => {
             setComment(e.target.value);
-            setErrorComment("");
           }}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)} // Use onBlur to handle losing focus

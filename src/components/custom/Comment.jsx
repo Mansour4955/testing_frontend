@@ -8,6 +8,7 @@ import { useTranslation } from "next-i18next";
 import dynamic from "next/dynamic";
 import getProfileImage from "@/helpers/getProfileImage";
 import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { toast } from "react-toastify";
 // Lazy load the component
 const Reaction = dynamic(() => import("./Reaction"), {
   ssr: false, // Optional: Disable SSR if needed
@@ -16,7 +17,7 @@ const Reaction = dynamic(() => import("./Reaction"), {
 export default function Comment({
   commentData,
   mode,
-  authorId,
+  // authorId,
   setDeleteCommentCount,
   deleteCommentCount,
 }) {
@@ -28,6 +29,9 @@ export default function Comment({
   const [showOptionsPopup, setShowOptionsPopup] = useState(false);
   const [isTextareaFocused, setIsTextareaFocused] = useState(false);
 
+  useEffect(() => {
+    setComment(commentData);
+  }, [commentData]);
   const { getItem } = useLocalStorage("userData");
   const userData = getItem();
   const profileImageOfCommentOwner = getProfileImage(comment.user);
@@ -53,10 +57,12 @@ export default function Comment({
           },
         }
       );
+      toast.success(t("logs.commentDeleteSuccess"));
       console.log("Delete a comment response: ", res.data);
       setShowDeleteComment(false);
       setDeleteCommentCount(deleteCommentCount + 1);
     } catch (err) {
+      toast.error(t("logs.commentDeleteError"));
       console.log("Error delete a comment: ", err.message);
     }
   };
@@ -79,7 +85,9 @@ export default function Comment({
         console.log("Update a comment response: ", res.data);
         setComment(res.data);
         setShowUpdateComment(false);
+        toast.success(t("logs.commentUpdateSuccess"));
       } catch (err) {
+         toast.error(t("logs.commentUpdateError"));
         console.log("Error updating a comment: ", err.message);
       }
     }
@@ -193,7 +201,7 @@ export default function Comment({
                   >
                     {`${comment.user.firstName} ${comment.user.lastName}`}
                   </p>
-                  {comment.user._id === authorId && (
+                  {comment.user._id === userData?.id && (
                     <p
                       className={`px-1 max-xs:text-[10px] xs:text-[10px] sm:text-xs lg:text-sm rounded-md ${
                         mode === "light"
@@ -220,7 +228,7 @@ export default function Comment({
                   <p className="max-xs:text-[10px] xs:text-[10px] sm:text-xs lg:text-sm">
                     {formattedDate}
                   </p>
-                  {comment.user._id === userData?.myId && (
+                  {comment.user._id === userData?.id && (
                     <div className={`${showOptionsPopup && "relative"}`}>
                       {showOptionsPopup ? (
                         <span onClick={() => setShowOptionsPopup(false)}>

@@ -111,13 +111,25 @@
       { "value": "in_private", "label": "Private event you joined" },
       { "value": "in_public", "label": "Public event you joined" }
     ],
-    "notificationActions":{
+    "notificationActions": {
       "leaved": "Leaved the event",
       "joined": "Joined the event",
       "reaction": "Reacted to the event",
       "access_offer": "Gave you access to the event",
       "reply": "Replied on your comment",
       "comment": "Commented on your event"
-    } 
+    },
+    "logs": {
+      "commentDeleteSuccess": "Comment deleted successfully",
+      "commentDeleteError": "Failed to delete comment",
+      "commentUpdateSuccess": "Comment updated successfully",
+      "commentUpdateError": "Failed to update comment",
+      "commentCreateSuccess": "Comment created successfully",
+      "commentCreateError": "Failed to create comment",
+      "plsEnterComment": "Please enter comment",
+      "allRequiredFieldsMustBeFilled": "All required fields must be filled.",
+      "eventCreatedSuccess": "Event created successfully",
+      "eventCreatedError": "Failed to create event"
+    }
   }
 }

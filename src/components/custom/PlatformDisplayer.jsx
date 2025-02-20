@@ -6,7 +6,8 @@ import { setMode } from "@/redux/settingsSlice";
 import LanguageSelector from "./LanguageSelector";
 import { setUser } from "@/redux/userSlice";
 import axios from "axios";
-
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 export default function PlatformDisplayer({ children }) {
   const [loading, setLoading] = useState(true);
   const [counter, setCounter] = useState(0);
@@ -56,6 +57,12 @@ export default function PlatformDisplayer({ children }) {
       </div>
       <LanguageSelector />
       <div className="flex-1 pb-20">{children}</div>
+      <ToastContainer
+        position="bottom-left"
+        autoClose={5000} // Toast will disappear after 5 seconds
+        hideProgressBar={false} // Show progress bar
+        newestOnTop={false} // Toasts appear in order
+      />
     </div>
   );
 }
