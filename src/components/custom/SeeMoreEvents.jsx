@@ -10,11 +10,29 @@ export default function SeeMoreEvents() {
   const { t } = useTranslation();
   return (
     <div
-      className={`mt-10 max-md:mt-8 max-sm:mt-6 max-xs:text-base xs:text-base sm:text-lg lg:text-xl text-center font-semibold ${
-        mode === "light" ? "text-light-primary" : "text-dark-primary"
-      }`}
+      className={`mt-10 max-md:mt-8 max-sm:mt-6 max-xs:text-sm xs:text-sm sm:text-base lg:text-lg text-center font-semibold flex items-center gap-x-1.5 justify-center`}
     >
-      To see all events <Link href="/events">Click here</Link>
+      {t("sentences.toSeeAllEvents")}
+
+      {user ? (
+        <Link
+          href="/events"
+          className={`hover:underline ${
+            mode === "light" ? "text-light-primary" : "text-dark-primary"
+          }`}
+        >
+          {t("sentences.clickHere")}
+        </Link>
+      ) : (
+        <Link
+          href="/login"
+          className={`underline ${
+            mode === "light" ? "text-light-primary" : "text-dark-primary"
+          }`}
+        >
+          {t("sentences.loginHere")}
+        </Link>
+      )}
     </div>
   );
 }

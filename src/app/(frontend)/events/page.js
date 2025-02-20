@@ -1,17 +1,13 @@
 "use client";
 import Events from "@/components/custom/Events";
-import dynamic from "next/dynamic";
 import { useState } from "react";
+import FilterEvents from "@/components/custom/FilterEvents";
+import CreateEvent from "@/components/custom/CreateEvent";
 
-// Lazy load the component
-const FilterEvents = dynamic(() => import("@/components/custom/FilterEvents"), {
-  ssr: false, // Optional: Disable SSR if needed
-});
-const CreateEvent = dynamic(() => import("@/components/custom/CreateEvent"), {
-  ssr: false, // Optional: Disable SSR if needed
-});
 export default function EventsPage() {
   const [filter, setFilter] = useState("all");
+  const [status, setStatus] = useState("all");
+  const [counter, setCounter] = useState(0);
   const [createEventCount, setCreateEventCount] = useState(0);
   return (
     <div className="w-full flex flex-col gap-y-10 max-sm:gap-y-6">
@@ -21,12 +17,19 @@ export default function EventsPage() {
             setCreateEventCount={setCreateEventCount}
             createEventCount={createEventCount}
           />
-          <FilterEvents setFilter={setFilter} />
+          <FilterEvents
+            setCounter={setCounter}
+            counter={counter}
+            setStatus={setStatus}
+            setFilter={setFilter}
+          />
         </div>
       </div>
       <Events
         createEventCount={createEventCount}
         filter={filter}
+        counter={counter}
+        status={status}
         parent="eventsPage"
       />
     </div>

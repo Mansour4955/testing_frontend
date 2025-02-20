@@ -25,7 +25,9 @@
       "uploadProfileImage": "Upload profile image (optional)",
       "alreadyHaveAnAccount": "Already have an account?",
       "dontHaveAnAccount": "don't have an account yet?",
-      "clickHere": "Click here"
+      "clickHere": "Click here",
+      "loginHere": "Log In here",
+      "toSeeAllEvents": "To see all events"
     },
     "words": {
       "cancel": "Cancel",
@@ -60,7 +62,11 @@
       "description": "Description",
       "create": "Create",
       "createEvent": "Create Event",
-      "wannaCreateEvent": "Wanna create event?"
+      "wannaCreateEvent": "Wanna create event?",
+      "filter": "Filter",
+      "eventType": "Event Type",
+      "eventStatusType": "Event Status",
+      "all": "All"
     },
     "errors": {
       "firstName": "First Name should not be empty",
@@ -93,6 +99,15 @@
       { "value": "seminar", "label": "Seminar" },
       { "value": "webinar", "label": "Webinar" },
       { "value": "social", "label": "Social" }
+    ],
+    "eventsTypes": [
+      { "value": "host", "label": "You're the host" },
+      { "value": "participant", "label": "You're a participant" },
+      { "value": "accessOnlyTo", "label": "You're invited to private event" },
+      { "value": "private", "label": "Private events" },
+      { "value": "public", "label": "Public events" },
+      { "value": "in_private", "label": "Private event you joined" },
+      { "value": "in_public", "label": "Public event you joined" }
     ]
   }
 }

@@ -13,7 +13,7 @@ const Event = dynamic(() => import("./Event"), {
   loading: () => <EventSkeleton />, // Fallback UI
 });
 
-export default function Events({ parent, filter = "all", createEventCount }) {
+export default function Events({ parent, filter = "all", createEventCount, status, counter }) {
   const { getItem } = useLocalStorage("userData");
   const userData = getItem();
   const { t } = useTranslation();
@@ -36,7 +36,11 @@ export default function Events({ parent, filter = "all", createEventCount }) {
               )
             : parent === "eventsPage"
             ? await axios(
-                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events?page=1&filter=${filter}`,
+                `${
+                  process.env.NEXT_PUBLIC_BACKEND_URL
+                }/api/events?page=1&filter=${filter}${
+                  status !== "all" ? `&status=${status}` : ""
+                }`,
                 {
                   headers: {
                     Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
@@ -57,7 +61,7 @@ export default function Events({ parent, filter = "all", createEventCount }) {
       }
     };
     getevents();
-  }, [deleteEventCount, filter, createEventCount]);
+  }, [deleteEventCount, counter, createEventCount]);
 
   // Fetch more events
   const fetchMoreEvents = async () => {
@@ -65,7 +69,11 @@ export default function Events({ parent, filter = "all", createEventCount }) {
     setLoading(true);
     try {
       const res = await axios(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/events?page=${page}&filter=${filter}`,
+        `${
+          process.env.NEXT_PUBLIC_BACKEND_URL
+        }/api/events?page=${page}&filter=${filter}${
+          status !== "all" ? `&status=${status}` : ""
+        }`,
         {
           headers: {
             Authorization: `Bearer ${userData?.token}`, // Pass the token in the Authorization header
@@ -75,6 +83,7 @@ export default function Events({ parent, filter = "all", createEventCount }) {
       setEvents((prev) => [...prev, ...(res.data.events || [])]);
       setPage((prev) => prev + 1);
       setHasMore(res.data.hasMore || false);
+      console.log("Fetch more events: ", res.data.events);
     } catch (error) {
       console.error("Error fetching more events :", error);
     } finally {
