@@ -6,14 +6,16 @@ import { useLocalStorage } from "@/hooks/useLocalStorage";
 import { useTranslation } from "react-i18next";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 export default function Notifications() {
+  const { mode } = useSelector((state) => state.settings);
   const { t } = useTranslation();
   const { getItem } = useLocalStorage("userData");
   const userData = getItem();
-
+  const [notifications, setNotifications] = useState([]);
   // Use the custom hook to manage WebSocket and notifications
-  const { notifications, socket } = useSocket(userData?.id);
+  const { notifications: theNotifications, socket } = useSocket(userData?.id);
 
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(false);
@@ -32,7 +34,8 @@ export default function Notifications() {
             },
           }
         );
-
+        setNotifications(res.data.notifications);
+        console.log(res.data.notifications);
         setHasMore(res.data.hasMore || false);
         setPage((prev) => prev + 1);
       } catch (error) {
@@ -41,7 +44,7 @@ export default function Notifications() {
     };
 
     fetchInitialNotifications();
-  }, [userData?.token]);
+  }, [userData?.token, theNotifications]);
 
   // Fetch more notifications
   const fetchMoreNotifications = async () => {
@@ -93,7 +96,7 @@ export default function Notifications() {
   return (
     <div className="w-full">
       {notifications.length > 0 ? (
-        <div className="flex flex-col items-center mt-10">
+        <div className="flex flex-col items-center">
           {notifications.map((notification, index) => (
             <div
               className="min-w-full flex justify-center"
