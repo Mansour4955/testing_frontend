@@ -3,21 +3,150 @@
     "languages": {
       "en": {
         "code": "en",
-        "name": "Inglés"
+        "name": "English"
       },
       "fr": {
         "code": "fr",
-        "name": "Francés"
+        "name": "French"
       },
       "es": {
         "code": "es",
-        "name": "Español"
+        "name": "Spanish"
       }
     },
     "headers": {
       "home": "Inicio",
       "events": "Eventos",
       "myProfile": "Mi Perfil"
+    },
+    "sentences": {
+      "noEventsFound": "No se encontraron eventos",
+      "noNotificationsFound": "No se encontraron notificaciones",
+      "deleteEventMessage": "¿Estás seguro de que deseas eliminar este evento?",
+      "uploadProfileImage": "Subir imagen de perfil (opcional)",
+      "alreadyHaveAnAccount": "¿Ya tienes una cuenta?",
+      "dontHaveAnAccount": "¿No tienes una cuenta aún?",
+      "clickHere": "Haz clic aquí",
+      "loginHere": "Iniciar sesión aquí",
+      "toSeeAllEvents": "Para ver todos los eventos"
+    },
+    "words": {
+      "cancel": "Cancelar",
+      "delete": "Eliminar",
+      "update": "Actualizar",
+      "like": "Me gusta",
+      "likes": "Me gusta",
+      "comment": "Comentario",
+      "comments": "Comentarios",
+      "doComment": "Comentar",
+      "send": "Enviar",
+      "close": "Cerrar",
+      "host": "Anfitrión",
+      "leave": "Dejar",
+      "join": "Unirse",
+      "register": "Registrar",
+      "login": "Iniciar sesión",
+      "firstName": "Nombre",
+      "lastName": "Apellido",
+      "email": "Correo electrónico",
+      "password": "Contraseña",
+      "cPassword": "Confirmar contraseña",
+      "edited": "Editado",
+      "deleteCommentMessage": "¿Estás seguro de que deseas eliminar este comentario?",
+      "accessOnlyTo": "Acceso solo a",
+      "content": "Contenido",
+      "access": "Acceso",
+      "category": "Categoría",
+      "maxParticipants": "Máximo de participantes",
+      "location": "Ubicación",
+      "date": "Fecha",
+      "description": "Descripción",
+      "create": "Crear",
+      "createEvent": "Crear evento",
+      "wannaCreateEvent": "¿Quieres crear un evento?",
+      "filter": "Filtrar",
+      "eventType": "Tipo de evento",
+      "eventStatusType": "Estado del evento",
+      "all": "Todos",
+      "hi": "Hola",
+      "noCommentsFound": "No comments yet."
+    },
+    "errors": {
+      "firstName": "El nombre no debe estar vacío",
+      "lastName": "El apellido no debe estar vacío",
+      "email": "El correo electrónico no debe estar vacío",
+      "password": "La contraseña no debe estar vacía",
+      "cPassword": "La contraseña de confirmación debe coincidir con la contraseña",
+      "accessOnlyTo": "Debe dar acceso a al menos una persona"
+    },
+    "placeholders": {
+      "writeComment": "Escribir comentario",
+      "selectStatus": "Seleccionar estado",
+      "updateStatus": "Actualizar estado (opcional)",
+      "accessOnlyToPlaceholder": "ID de usuario (separados por comas)"
+    },
+    "status": [
+      { "value": "scheduled", "label": "programado" },
+      { "value": "ongoing", "label": "en curso" },
+      { "value": "completed", "label": "completado" },
+      { "value": "cancelled", "label": "cancelado" }
+    ],
+    "access": [
+      { "value": "public", "label": "Público" },
+      { "value": "private", "label": "Privado" }
+    ],
+    "category": [
+      { "value": "conference", "label": "Conferencia" },
+      { "value": "workshop", "label": "Taller" },
+      { "value": "meetup", "label": "Reunión" },
+      { "value": "seminar", "label": "Seminario" },
+      { "value": "webinar", "label": "Webinar" },
+      { "value": "social", "label": "Social" }
+    ],
+    "eventsTypes": [
+      { "value": "host", "label": "Eres el anfitrión" },
+      { "value": "participant", "label": "Eres un participante" },
+      {
+        "value": "accessOnlyTo",
+        "label": "Estás invitado a un evento privado"
+      },
+      { "value": "private", "label": "Eventos privados" },
+      { "value": "public", "label": "Eventos públicos" },
+      { "value": "in_private", "label": "Evento privado al que te uniste" },
+      { "value": "in_public", "label": "Evento público al que te uniste" }
+    ],
+    "notificationActions": {
+      "leaved": "Dejó el evento",
+      "joined": "Se unió al evento",
+      "reaction": "Reaccionó al evento",
+      "access_offer": "Te dio acceso al evento",
+      "reply": "Respondió a tu comentario",
+      "comment": "Comentó en tu evento"
+    },
+    "logs": {
+      "commentDeleteSuccess": "Comentario eliminado con éxito",
+      "commentDeleteError": "Error al eliminar el comentario",
+      "commentUpdateSuccess": "Comentario actualizado con éxito",
+      "commentUpdateError": "Error al actualizar el comentario",
+      "commentCreateSuccess": "Comentario creado con éxito",
+      "commentCreateError": "Error al crear el comentario",
+      "plsEnterComment": "Por favor ingresa un comentario",
+      "allRequiredFieldsMustBeFilled": "Todos los campos obligatorios deben ser completados.",
+      "eventCreatedSuccess": "Evento creado con éxito",
+      "eventCreatedError": "Error al crear el evento",
+      "eventUpdateSuccess": "Evento actualizado con éxito",
+      "eventUpdateError": "Error al actualizar el evento",
+      "eventDeleteSuccess": "Evento eliminado con éxito",
+      "eventDeleteError": "Error al eliminar el evento",
+      "didntChangeAnything": "Cambia algo para actualizar o cancelar",
+      "joinedEventSuccess": "Te uniste al evento con éxito",
+      "joinedEventError": "Error al unirte al evento",
+      "leavedEventSuccess": "Dejaste el evento con éxito",
+      "leavedEventError": "Error al dejar el evento",
+      "registeredSuccess": "Registrado con éxito",
+      "registeredError": "Error al registrar",
+      "loginSuccess": "Inició sesión con éxito",
+      "loginError": "Error al iniciar sesión"
     }
   }
 }

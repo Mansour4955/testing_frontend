@@ -107,7 +107,7 @@ export default function ShowComments({
               />
             ))
           ) : (
-            <p className="text-center">No comments yet.</p>
+            <p className="text-center">{t("words.noCommentsFound")}</p>
           )}
 
           {/* {loading && <p>Loading...</p>} */}
@@ -116,7 +116,9 @@ export default function ShowComments({
       {/* Close Button */}
       <div className="flex justify-center">
         <button
-          className={`w-4/5 px-4 duration-150 ${showCreateComment ? "mt-2 mb-1" : "my-2"}  py-1 max-xs:text-xs xs:text-xs sm:text-sm lg:text-base font-medium ${
+          className={`w-4/5 px-4 duration-150 ${
+            showCreateComment ? "mt-2 mb-1" : "my-2"
+          }  py-1 max-xs:text-xs xs:text-xs sm:text-sm lg:text-base font-medium ${
             mode === "light"
               ? "bg-light-primary hover:bg-light-secondary text-dark-text"
               : "bg-dark-primary hover:bg-dark-secondary text-light-text"

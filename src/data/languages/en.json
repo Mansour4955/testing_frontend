@@ -68,7 +68,8 @@
       "eventType": "Event Type",
       "eventStatusType": "Event Status",
       "all": "All",
-      "hi": "Hi"
+      "hi": "Hi",
+      "noCommentsFound": "Aún no hay comentarios."
     },
     "errors": {
       "firstName": "First Name should not be empty",
