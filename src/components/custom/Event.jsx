@@ -267,7 +267,7 @@ export default function Event({
                   mode === "light" ? "text-light-primary" : "text-dark-primary"
                 }`}
               >
-                {`${event.host.firstName} ${event.host.lastName}`}
+                {`${event?.host?.firstName} ${event?.host?.lastName}`}
               </p>
               <p
                 className={`max-xs:text-[10px] xs:text-[10px] sm:text-xs lg:text-sm font-normal ${
